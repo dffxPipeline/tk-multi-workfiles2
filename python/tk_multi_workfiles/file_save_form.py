@@ -138,6 +138,9 @@ class FileSaveForm(FileFormBase):
         self._ui.use_next_available_cb.toggled.connect(
             self._on_use_next_available_version_toggled
         )
+        self._ui.use_zero_version.toggled.connect(
+            self._on_use_zero_version_toggled
+        )
 
         self._ui.browser.file_selected.connect(self._on_browser_file_selected)
         self._ui.browser.file_double_clicked.connect(
@@ -200,6 +203,9 @@ class FileSaveForm(FileFormBase):
         """
         """
         self._ui.version_spinner.setEnabled(not checked)
+        self._start_preview_update()
+
+    def _on_use_zero_version_toggled(self):
         self._start_preview_update()
 
     def _start_preview_update(self):
