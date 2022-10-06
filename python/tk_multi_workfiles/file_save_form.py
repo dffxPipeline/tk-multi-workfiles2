@@ -123,6 +123,7 @@ class FileSaveForm(FileFormBase):
 
         # default state for the version controls is to use the next available version:
         self._ui.use_next_available_cb.setChecked(True)
+        self._ui.use_zero_version.setChecked(True)
         self._ui.version_spinner.setEnabled(False)
 
         # hook up signals on controls:
@@ -288,6 +289,10 @@ class FileSaveForm(FileFormBase):
         # update version controls:
         version = result.get("version") or 1
         next_version = result.get("next_version") or 1
+        use_zero_version = self._ui.use_zero_version.isChecked()
+        if use_zero_version:
+            version = result.get("version") or 0
+            next_version = result.get("next_version") or 0
         self._update_version_spinner(version, next_version)
 
         self._enable_save()
@@ -387,6 +392,7 @@ class FileSaveForm(FileFormBase):
         next_version = None
         version_is_used = "version" in env.work_template.keys
         if version_is_used:
+            use_zero_version = self._ui.use_zero_version.isChecked()
             # version is used so we need to find the latest version - this means
             # searching for files...
             # need a file key to find all versions so lets build it:
@@ -411,14 +417,24 @@ class FileSaveForm(FileFormBase):
                         )
                         or []
                     )
+                    app.log_info("files: %s\n" % (str(files)))
+
                 except TankError as e:
                     raise TankError("Failed to find files for this work area: %s" % e)
                 file_versions = [f.version for f in files]
 
+            app.log_info("file_versions: %s\n" % (str(file_versions)))
+
             max_version = max(file_versions or [0])
             next_version = max_version + 1
 
+            if max_version == 0 and not file_versions:
+                if use_zero_version:
+                    version = 0
+                    next_version = 0
+
             # update version:
+            #print ("next_version: %d max_version: %d version: %d\n" % (next_version, max_version, version))
             version = next_version if use_next_version else max(version, next_version)
             fields["version"] = version
         else:
@@ -443,6 +459,8 @@ class FileSaveForm(FileFormBase):
     def _update_version_spinner(self, version, min_version, block_signals=True):
         """
         """
+        #print ("min_version: %d version: %d\n" % (min_version, version))
+
         signals_blocked = self._ui.version_spinner.blockSignals(block_signals)
         try:
             self._ui.version_spinner.setMinimum(min_version)
@@ -568,15 +586,22 @@ class FileSaveForm(FileFormBase):
                 pass
 
         if version_is_used:
+            version_to_set = 0 #assume we allow 0 versions
             # update version spinner
-            version = fields.get("version", 1)
+            version = fields.get("version", 1) #default to 1
+            use_zero_version = self._ui.use_zero_version.isChecked()
+            if use_zero_version:
+                version = fields.get("version", 0) #default to 0
             # update the version spinner:
             use_next_version = self._ui.use_next_available_cb.isChecked()
-            version_to_set = version + 1
+            if version != 0:
+                version_to_set = version + 1
+                version += 1
             if not use_next_version:
                 spinner_version = self._ui.version_spinner.value()
                 version_to_set = max(version_to_set, spinner_version)
-            self._update_version_spinner(version_to_set, version + 1)
+            #print ("version: %d version_to_set: %d\n" % (version, version_to_set))
+            self._update_version_spinner(version_to_set, version)
 
     def _on_work_area_changed(self, env):
         """
@@ -671,6 +696,9 @@ class FileSaveForm(FileFormBase):
 
             # resize the window to the collapsed size:
             self.window().resize(self._collapsed_size)
+
+    def check_zero_version(self, version_to_save):
+        pass
 
     def _on_save(self):
         """

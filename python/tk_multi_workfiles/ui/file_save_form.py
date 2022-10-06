@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'file_save_form.ui'
 #
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+#      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -120,7 +120,7 @@ class Ui_FileSaveForm(object):
         self.file_type_label.setObjectName("file_type_label")
         self.file_controls_grid.addWidget(self.file_type_label, 2, 0, 1, 1)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setSpacing(-1)
+        self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.version_spinner = QtGui.QSpinBox(FileSaveForm)
         self.version_spinner.setMaximum(9999999)
@@ -129,6 +129,9 @@ class Ui_FileSaveForm(object):
         self.use_next_available_cb = QtGui.QCheckBox(FileSaveForm)
         self.use_next_available_cb.setObjectName("use_next_available_cb")
         self.horizontalLayout_2.addWidget(self.use_next_available_cb)
+        self.use_zero_version = QtGui.QCheckBox(FileSaveForm)
+        self.use_zero_version.setObjectName("use_zero_version")
+        self.horizontalLayout_2.addWidget(self.use_zero_version)
         spacerItem = QtGui.QSpacerItem(0, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.file_controls_grid.addLayout(self.horizontalLayout_2, 1, 1, 1, 1)
@@ -258,7 +261,8 @@ class Ui_FileSaveForm(object):
         QtCore.QMetaObject.connectSlotsByName(FileSaveForm)
         FileSaveForm.setTabOrder(self.name_edit, self.version_spinner)
         FileSaveForm.setTabOrder(self.version_spinner, self.use_next_available_cb)
-        FileSaveForm.setTabOrder(self.use_next_available_cb, self.file_type_menu)
+        FileSaveForm.setTabOrder(self.use_next_available_cb, self.use_zero_version)
+        FileSaveForm.setTabOrder(self.use_zero_version, self.file_type_menu)
         FileSaveForm.setTabOrder(self.file_type_menu, self.cancel_btn)
         FileSaveForm.setTabOrder(self.cancel_btn, self.save_btn)
         FileSaveForm.setTabOrder(self.save_btn, self.expand_checkbox)
@@ -271,6 +275,7 @@ class Ui_FileSaveForm(object):
         self.file_type_label.setText(QtGui.QApplication.translate("FileSaveForm", "<html><head/><body><p><span style=\" font-weight:600;\">File Type:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.version_spinner.setAccessibleName(QtGui.QApplication.translate("FileSaveForm", "Version Number", None, QtGui.QApplication.UnicodeUTF8))
         self.use_next_available_cb.setText(QtGui.QApplication.translate("FileSaveForm", "Use Next Available Version Number", None, QtGui.QApplication.UnicodeUTF8))
+        self.use_zero_version.setText(QtGui.QApplication.translate("FileSaveForm", "Allow Zero Version", None, QtGui.QApplication.UnicodeUTF8))
         self.file_type_menu.setAccessibleName(QtGui.QApplication.translate("FileSaveForm", "File Type", None, QtGui.QApplication.UnicodeUTF8))
         self.name_edit.setAccessibleName(QtGui.QApplication.translate("FileSaveForm", "Name Edit", None, QtGui.QApplication.UnicodeUTF8))
         self.preview_label.setText(QtGui.QApplication.translate("FileSaveForm", "<html><head/><body><p><span style=\" font-weight:600; color:rgb(120, 120, 120)\">Preview:</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))

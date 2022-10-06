@@ -231,7 +231,7 @@ background-color: rgb(255, 128, 0);
        <item row="1" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="spacing">
-          <number>-1</number>
+          <number>6</number>
          </property>
          <item>
           <widget class="QSpinBox" name="version_spinner">
@@ -247,6 +247,13 @@ background-color: rgb(255, 128, 0);
           <widget class="QCheckBox" name="use_next_available_cb">
            <property name="text">
             <string>Use Next Available Version Number</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="use_zero_version">
+           <property name="text">
+            <string>Allow Zero Version</string>
            </property>
           </widget>
          </item>
@@ -587,6 +594,7 @@ background-color: rgb(255, 128, 0);
   <tabstop>name_edit</tabstop>
   <tabstop>version_spinner</tabstop>
   <tabstop>use_next_available_cb</tabstop>
+  <tabstop>use_zero_version</tabstop>
   <tabstop>file_type_menu</tabstop>
   <tabstop>cancel_btn</tabstop>
   <tabstop>save_btn</tabstop>
