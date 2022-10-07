@@ -17,6 +17,7 @@ the list of current work files.
 import os
 import traceback
 from itertools import chain
+import re
 
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
@@ -88,6 +89,10 @@ class FileSaveForm(FileFormBase):
         Actual construction!
         """
         app = sgtk.platform.current_bundle()
+        engine_name = None
+        engine = sgtk.platform.current_engine()
+        if engine:
+            engine_name = engine.instance_name
 
         super(FileSaveForm, self)._do_init()
 
@@ -123,7 +128,12 @@ class FileSaveForm(FileFormBase):
 
         # default state for the version controls is to use the next available version:
         self._ui.use_next_available_cb.setChecked(True)
-        self._ui.use_zero_version.setChecked(True)
+
+        self._ui.use_zero_version.setChecked(False)
+        self._ui.use_zero_version.setVisible(False)
+        if engine_name and re.search("nuke", str(engine_name), re.IGNORECASE):
+            self._ui.use_zero_version.setChecked(True)
+            self._ui.use_zero_version.setVisible(True)
         self._ui.version_spinner.setEnabled(False)
 
         # hook up signals on controls:
